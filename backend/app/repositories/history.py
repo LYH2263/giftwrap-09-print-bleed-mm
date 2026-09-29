@@ -6,13 +6,30 @@ def insert_run(box_id, overlap, result, note=""):
     c = connect()
     try:
         cur = c.execute(
-            "INSERT INTO calc_runs(box_id,overlap,result_json,note,created_at) VALUES (?,?,?,?,?)",
-            (box_id, overlap, json.dumps(result, ensure_ascii=False), note, datetime.now(timezone.utc).isoformat()),
+            """INSERT INTO calc_runs(box_id,overlap,bleed_mm,eff_length,eff_width,eff_height,paper_m2,result_json,note,created_at)
+               VALUES (?,?,?,?,?,?,?,?,?,?)""",
+            (
+                box_id,
+                overlap,
+                result.get("bleed_mm", 0),
+                result.get("eff_length"),
+                result.get("eff_width"),
+                result.get("eff_height"),
+                result.get("paper_m2"),
+                json.dumps(result, ensure_ascii=False),
+                note,
+                datetime.now(timezone.utc).isoformat(),
+            ),
         )
         c.commit()
         return int(cur.lastrowid)
     finally:
         c.close()
+
+def _row_to_dict(row):
+    d = dict(row)
+    d["result"] = json.loads(d.pop("result_json"))
+    return d
 
 def list_runs(limit=50):
     c = connect()
@@ -21,11 +38,17 @@ def list_runs(limit=50):
             """SELECT r.*, b.name box_name FROM calc_runs r LEFT JOIN boxes b ON b.id=r.box_id ORDER BY r.id DESC LIMIT ?""",
             (limit,),
         ).fetchall()
-        out = []
-        for row in rows:
-            d = dict(row)
-            d["result"] = json.loads(d.pop("result_json"))
-            out.append(d)
-        return out
+        return [_row_to_dict(r) for r in rows]
+    finally:
+        c.close()
+
+def get_run(run_id):
+    c = connect()
+    try:
+        row = c.execute(
+            """SELECT r.*, b.name box_name FROM calc_runs r LEFT JOIN boxes b ON b.id=r.box_id WHERE r.id=?""",
+            (run_id,),
+        ).fetchone()
+        return _row_to_dict(row) if row else None
     finally:
         c.close()

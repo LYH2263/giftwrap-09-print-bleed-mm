@@ -22,6 +22,7 @@ onMounted(async () => {
     <div v-else class="result-board">
       <div class="figure">× {{ s.overlap ?? '—' }}</div>
       <p class="stat-line">用纸面积 = 展开表面积 × 折边系数</p>
+      <p class="stat-line">口径 bleed_then_overlap:v1：出血先逐边外扩盒体几何，再对扩边后表面积乘折边系数；该口径随单固化。</p>
     </div>
   </div>
 </template>

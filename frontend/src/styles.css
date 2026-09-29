@@ -296,6 +296,24 @@ select {
   color: var(--ink);
 }
 
+.field {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+input.num {
+  width: 96px;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--ink);
+  font: inherit;
+}
+
 button,
 .btn {
   display: inline-flex;
@@ -486,6 +504,13 @@ button.ribbon:hover {
 .unfold-svg .panel.top {
   fill: rgba(214, 75, 106, 0.14);
   stroke: var(--ribbon);
+}
+
+.unfold-svg .bleed-line {
+  fill: none;
+  stroke: var(--ribbon);
+  stroke-width: 1;
+  stroke-dasharray: 4 3;
 }
 
 .unfold-svg text {
