@@ -296,6 +296,24 @@ select {
   color: var(--ink);
 }
 
+input[type='number'] {
+  width: 110px;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--ink);
+  font: inherit;
+}
+
+.field {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+}
+
 button,
 .btn {
   display: inline-flex;
@@ -486,6 +504,17 @@ button.ribbon:hover {
 .unfold-svg .panel.top {
   fill: rgba(214, 75, 106, 0.14);
   stroke: var(--ribbon);
+}
+
+.unfold-svg .bleed-edge {
+  fill: none;
+  stroke: var(--ribbon);
+  stroke-width: 1.2;
+  stroke-dasharray: 5 4;
+}
+
+.unfold-svg .bleed-label {
+  fill: var(--ribbon);
 }
 
 .unfold-svg text {
